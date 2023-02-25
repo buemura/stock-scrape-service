@@ -1,0 +1,23 @@
+service: stock-scraper-service
+frameworkVersion: ">=1.28.0"
+provider:
+  name: aws
+  runtime: go1.x
+  region: sa-east-1
+  stage: ${opt:stage}
+
+functions:
+  api:
+    handler: bin/main
+    events:
+      - http:
+          path: /health
+          method: GET
+      - http:
+          path: /scrape
+          method: GET
+
+package:
+  patterns:
+    - "!*/**"
+    - bin/main
