@@ -1,8 +1,9 @@
 FROM golang:1.19-alpine
 WORKDIR /app
-COPY go.mod go.sum ./
+COPY go.mod .
+COPY go.sum .
 RUN go mod download
 COPY . .
-RUN go build -ldflags "-s -w" /app
+RUN go build -o main cmd/main.go
 EXPOSE 8080
-CMD ["/app"]
+CMD ["/app/main"]
