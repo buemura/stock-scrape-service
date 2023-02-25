@@ -1,4 +1,4 @@
-package cmd
+package pkg
 
 import (
 	"fmt"
@@ -18,7 +18,7 @@ func (c *StockMarketPrice) String() string {
     return fmt.Sprintf(`{"ticker": "%s", "price": %.2f}`, c.Ticker, c.Price)
 }
 
-func StartScraping(stocks []string) ([]StockMarketPrice) {
+func ScrapeStocks(stocks []string) ([]StockMarketPrice) {
 	ch := make(chan StockMarketPrice)
 	var wg sync.WaitGroup
 	var result []StockMarketPrice
