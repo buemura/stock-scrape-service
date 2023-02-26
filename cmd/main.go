@@ -1,7 +1,7 @@
 package main
 
 import (
-	"scraper-service/infra/http/gin/routers"
+	"scraper-service/internal/http/gin/routers"
 
 	"github.com/gin-gonic/gin"
 )
