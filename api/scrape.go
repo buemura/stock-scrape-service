@@ -4,18 +4,21 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"scraper-service/handlers"
 )
 
-type RootResponse struct {
+type ScrapeResponse struct {
 	Status string `json:"status"`
 	Data any `json:"data"`
 }
 
-func Handler(w http.ResponseWriter, r *http.Request) {
-	response := RootResponse{
-		Data: "hello",
+func Scrape(w http.ResponseWriter, r *http.Request) {
+	data := handlers.ScrapeHandler()
+	response := ScrapeResponse{
 		Status: "success",
+		Data:   data,
 	}
+	
 	jsonResponse, _ := json.Marshal(response)
 	fmt.Fprintf(w, string(jsonResponse))
 }
