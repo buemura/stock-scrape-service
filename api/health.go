@@ -1,10 +1,9 @@
 package handler
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/http"
 	"scraper-service/handlers"
+	"scraper-service/internal/http/utils"
 )
 
 type HealthResponse struct {
@@ -13,12 +12,16 @@ type HealthResponse struct {
 }
 
 func Health(w http.ResponseWriter, r *http.Request) {
-	data := handlers.HealthHandler()
-	response := HealthResponse{
-		Status: "success",
-		Data:  data,
+	switch r.Method {
+	case "GET": {
+		data := handlers.HealthHandler()
+		utils.HandleSuccessResponse(w, http.StatusOK, data)
+		return
+	}
+	default: {
+		utils.HandleErrorResponse(w, http.StatusNotFound, "Route not found")
+		return
+	}
 	}
 	
-	jsonResponse, _ := json.Marshal(response)
-	fmt.Fprintf(w, string(jsonResponse))
 }

@@ -1,24 +1,32 @@
 package handler
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/http"
 	"scraper-service/handlers"
+	"scraper-service/internal/http/utils"
 )
 
-type ScrapeResponse struct {
-	Status string `json:"status"`
-	Data any `json:"data"`
+type ScrapeRequestBody struct {
+    Stocks []string `json:"stocks"`
 }
 
 func Scrape(w http.ResponseWriter, r *http.Request) {
-	data := handlers.ScrapeHandler()
-	response := ScrapeResponse{
-		Status: "success",
-		Data:   data,
+	switch r.Method {
+	case "GET": {
+		data := handlers.ScrapeAuto()
+		utils.HandleSuccessResponse(w, http.StatusOK, data)
+		return
 	}
-	
-	jsonResponse, _ := json.Marshal(response)
-	fmt.Fprintf(w, string(jsonResponse))
+	case "POST": {
+		var requestBody ScrapeRequestBody
+		utils.GetRequestBody(w, r, &requestBody)
+		data := handlers.ScrapeManual(requestBody.Stocks)
+		utils.HandleSuccessResponse(w, http.StatusOK, data)
+		return
+	}
+	default: {
+		utils.HandleErrorResponse(w, http.StatusNotFound, "Route not found")
+		return
+	}
+	}
 }

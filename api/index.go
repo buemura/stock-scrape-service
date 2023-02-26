@@ -1,9 +1,8 @@
 package handler
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/http"
+	"scraper-service/internal/http/utils"
 )
 
 type RootResponse struct {
@@ -12,10 +11,6 @@ type RootResponse struct {
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
-	response := RootResponse{
-		Data: "hello",
-		Status: "success",
-	}
-	jsonResponse, _ := json.Marshal(response)
-	fmt.Fprintf(w, string(jsonResponse))
+	utils.HandleSuccessResponse(w, http.StatusOK, "hello from api")
+	return
 }
