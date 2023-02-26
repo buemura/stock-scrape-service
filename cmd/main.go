@@ -10,7 +10,8 @@ var server *gin.Engine
 
 func init() {
 	server = gin.Default()
-	routers.SetupRouters(server)
+	router := server.Group("/api")
+	routers.SetupRouters(router)
 }
 
 func main() {
